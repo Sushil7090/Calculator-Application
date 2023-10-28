@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+    <style>
+        /*  CSS styles  */
+       
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+#calculator-container {
+    text-align: center;
+    background-color: Gray;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 10px 0px 20px #888888;
+}
+
+h1 {
+    color: black;
+}
+
+form {
+    margin-top: 10px;
+}
+
+#display {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    margin-bottom: 10px; 
+}
+
+#buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #f0f0f0;
+}
+
+#result {
+    margin-top: 20px;
+    color: #333;
+}
+
+    </style>
+</head>
+<body>
+    <div id="calculator-container">
+        <h1>Basic Calculator</h1>
+        <form method="post" id="calc-form">
+            {% csrf_token %}
+            <input type="text" name="display" id="display" readonly><br>
+
+            <div id="buttons">
+                <button type="button" class="digit" value="7">7</button>
+                <button type="button" class="digit" value="8">8</button>
+                <button type="button" class="digit" value="9">9</button>
+                <button type="button" class="operator" value="+">+</button>
+                <button type="button" class="digit" value="4">4</button>
+                <button type="button" class="digit" value="5">5</button>
+                <button type="button" class="digit" value="6">6</button>
+                <button type="button" class="operator" value="-">-</button>
+                <button type="button" class="digit" value="1">1</button>
+                <button type="button" class="digit" value="2">2</button>
+                <button type="button" class="digit" value="3">3</button>
+                <button type="button" class="operator" value="*">*</button>
+                <button type="button" class="digit" value="0">0</button>
+                <button type="button" class="clear" value="C">C</button>
+                <button type="button" class="equals" value="=">=</button>
+                <button type="button" class="operator" value="/">/</button>
+            </div>
+        </form>
+
+        <div id="result"></div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let display = document.getElementById("display");
+                let resultDisplay = document.getElementById("result");
+                let buttons = document.querySelectorAll("button");
+        
+                for (let button of buttons) {
+                    button.addEventListener("click", function () {
+                        if (this.value === "=") {
+                            //  calculation and display the result
+                            try {
+                                resultDisplay.textContent = eval(display.value);
+                                display.value = ""; // Clear the input field
+                            } catch (error) {
+                                resultDisplay.textContent = "Error";
+                            }
+                        } else if (this.value === "C") {
+                            // Clear the display
+                            display.value = "";
+                            resultDisplay.textContent = ""; // Clear the result display
+                        } else {
+                            display.value += this.value;
+                        }
+                    });
+                }
+            });
+        </script>
+        
+</body>
+</html>
